@@ -18,16 +18,16 @@ internal class Day03 : Day
         
         if (part == 1) return inputValues
             .Select(bag => Priority(
-                bag.Take(bag.Length / 2).ToImmutableHashSet()
-                .Intersect(bag.Skip(bag.Length / 2).ToImmutableHashSet()).First()
+                bag.Take(bag.Length / 2).ToHashSet()
+                .Intersect(bag.Skip(bag.Length / 2).ToHashSet()).First()
                 )
             ).Sum();
         
         return inputValues
             .Chunk(3).Select(group =>
-                Priority(group.First().ToImmutableHashSet()
-                    .Intersect(group.Skip(1).First().ToImmutableHashSet())
-                    .Intersect(group.Skip(2).First().ToImmutableHashSet()).First()
+                Priority(group.First().ToHashSet()
+                    .Intersect(group.Skip(1).First().ToHashSet())
+                    .Intersect(group.Skip(2).First().ToHashSet()).First()
                 )
             ).Sum();
 

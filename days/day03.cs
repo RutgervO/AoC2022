@@ -17,9 +17,9 @@ internal class Day03 : Day
         var inputValues = GetListOfLines(inputName);
         
         if (part == 1) return inputValues
-            .Select(bag => Priority(
-                bag.Take(bag.Length / 2).ToHashSet()
-                .Intersect(bag.Skip(bag.Length / 2).ToHashSet()).First()
+            .Select(bag =>
+                Priority(bag.Take(bag.Length / 2).ToHashSet()
+                    .Intersect(bag.Skip(bag.Length / 2).ToHashSet()).First()
                 )
             ).Sum();
         

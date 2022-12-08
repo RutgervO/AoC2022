@@ -2,7 +2,7 @@ using System.Collections.Immutable;
 
 namespace AOC.days;
 
-internal class Day03 : Day
+internal class Day03 : Day<long>
 {
     protected override void SetSequence()
     {

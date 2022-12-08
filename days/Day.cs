@@ -1,16 +1,17 @@
 namespace AOC.days;
 
-internal abstract class Day
+internal abstract class Day<TResult> where TResult:IComparable?
 {
     public int DayNumber { get; set; }
-    private List<(string Title, Func<long> Action, long? TestResult)> Sequence { get; }
-    
-    public abstract long RunPart(int part, string inputName);
+    private List<(string Title, Func<TResult> Action, TResult? TestResult)> Sequence { get; }
+
+    public abstract TResult RunPart(int part, string inputName);
+
     protected abstract void SetSequence();
 
     protected Day()
     {
-        Sequence = new List<(string Title, Func<long> Action, long? TestResult)>();
+        Sequence = new List<(string Title, Func<TResult> Action, TResult? TestResult)>();
         Initialize();
     }
 
@@ -19,7 +20,7 @@ internal abstract class Day
         SetSequence();
     }
 
-    protected void AddRun(string title, Func<long> action, long? testResult=null)
+    protected void AddRun(string title, Func<TResult> action, TResult? testResult=default)
     {
         Sequence.Add((title, action, testResult));
     }
@@ -29,16 +30,12 @@ internal abstract class Day
         foreach (var (title, action, testResult) in Sequence)
         {
             Out($"Day {DayNumber} {title}: ");
-            long? result = action();
+            var result = action();
             Out($"{result} ");
-            if (testResult is not null)
-            {
-                if (result == testResult)
-                {
+            if (title.Contains("est") || !Equals(testResult, default(TResult))) {
+                if (Equals(result, testResult)) {
                     Out("✓");
-                }
-                else
-                {
+                } else {
                     Out($"❌ Expected: {testResult}\n");
                     return;
                 }

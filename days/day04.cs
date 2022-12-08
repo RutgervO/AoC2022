@@ -1,6 +1,6 @@
 namespace AOC.days;
 
-internal class Day04 : Day
+internal class Day04 : Day<long>
 {
     protected override void SetSequence()
     {

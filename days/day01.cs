@@ -1,12 +1,12 @@
 namespace AOC.days;
 
-internal class Day01 : Day
+internal class Day01 : Day<long>
 {
     protected override void SetSequence()
     {
-        AddRun("Test 1", () => RunPart(1, "01_t1.txt"), 24000); // ToDo
+        AddRun("Test 1", () => RunPart(1, "01_t1.txt"), 24000);
         AddRun("Part 1", () => RunPart(1, "01.txt"));
-        AddRun("Test 2", () => RunPart(2, "01_t1.txt"), 45000); // ToDo
+        AddRun("Test 2", () => RunPart(2, "01_t1.txt"), 45000);
         AddRun("Part 2", () => RunPart(2, "01.txt"));
     }
 

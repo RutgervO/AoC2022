@@ -16,18 +16,28 @@ internal static class Program
             limit = 1;
         }
 
-        var rootType = typeof(Day);
+        var baseName = new string(typeof(Day<>).FullName!.TakeWhile(c => c != '`').ToArray());
         var days = AppDomain.CurrentDomain.GetAssemblies()
             .SelectMany(s => s.GetTypes())
-            .Where(p => p.BaseType == rootType)
-            .ToList();
-        var dayNumbers = days.Select(d => int.Parse(d.Name[3..])).ToArray().Skip(skip).Take(limit);
-        foreach (var dayNumber in dayNumbers)
+            .Where(p => p.FullName!.StartsWith(baseName))
+            .Where(p => p.Name.Length == 5 && p.Name[3] >= '0' && p.Name[3] < '3')
+            .Select(p => new Tuple<System.Type,int> ( p, int.Parse(p.Name[3..])))
+            .ToArray();
+        skip = Math.Min(days.Length - 1, skip); // Don't skip past the last day
+        Console.WriteLine($"Running the last {limit} day(s) out of {days.Length} ");
+        foreach (var (classToRun, dayNumber) in days.Skip(skip).Take(limit))
         {
-            var classToRun = days.Single(d => d.Name[3..].EndsWith(dayNumber.ToString("D2")));
-            if (Activator.CreateInstance(classToRun) is not Day day) return;
-            day.DayNumber = dayNumber;
-            day.Run();
+            switch (Activator.CreateInstance(classToRun))
+            {
+                case Day<long> day:
+                    day.DayNumber = dayNumber;
+                    day.Run();
+                    break;
+                case Day<string> day:
+                    day.DayNumber = dayNumber;
+                    day.Run();
+                    break;
+            }
         }
     }
 }

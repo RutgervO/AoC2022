@@ -1,6 +1,6 @@
 namespace AOC.util;
 
-public class Board2D<T> where T : IFormattable, new()
+public class Board2D<T> where T : IFormattable, IComparable, new()
 {
     public DefaultDictionary<Coordinate, T> Board;
     public int Width { get; private set; }
@@ -61,6 +61,11 @@ public class Board2D<T> where T : IFormattable, new()
         return coordinate.X >= 0 && coordinate.X < Width && coordinate.Y >= 0 && coordinate.Y < Height;
     }
 
+    public bool IsOnEdge(Coordinate coordinate)
+    {
+        return coordinate.X == 0 || coordinate.X + 1 == Width || coordinate.Y == 0 || coordinate.Y + 1 == Height;
+    }
+
     public IEnumerable<Coordinate> Neighbours(Coordinate coordinate)
     {
         foreach (var delta in NeighbourDeltas)
@@ -93,6 +98,36 @@ public class Board2D<T> where T : IFormattable, new()
         return AllCoordinates().Select(coordinate => Board[coordinate]);
     }
 
+    public bool FindLargerOrEqualValue(Coordinate coordinate, Direction direction)
+    {
+        var value = Get(coordinate);
+        var delta = direction.ToCoordinate();
+        while (true)
+        {
+            coordinate = coordinate.Add(delta);
+            if (!IsOnBoard(coordinate))
+                return false;
+            if (Get(coordinate).CompareTo(value) >= 0)
+                return true;
+        }
+    }
+
+    public int GetDistanceToLargerOrEqualValue(Coordinate coordinate, Direction direction)
+    {
+        var value = Get(coordinate);
+        var delta = direction.ToCoordinate();
+        var distance = 0;
+        while (true)
+        {
+            coordinate = coordinate.Add(delta);
+            if (!IsOnBoard(coordinate))
+                return distance;
+            distance += 1;
+            if (Get(coordinate).CompareTo(value) >= 0)
+                return distance;
+        }
+    }
+    
     public void Print(string? title = null, Func<T, bool>? highlight = null)
     {
         if (title is not null)

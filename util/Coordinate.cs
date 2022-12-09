@@ -33,6 +33,15 @@ public readonly struct Coordinate
         return new Coordinate(X + other.X, Y + other.Y);
     }
 
+    public Coordinate Subtract(Coordinate other)
+    {
+        return new Coordinate(X - other.X, Y - other.Y);
+    }
+
+    public Coordinate AbsMax(int max)
+    {
+        return new Coordinate(Math.Min(Math.Max(X, -max), max), Math.Min(Math.Max(Y, -max), max));
+    }
     public void Deconstruct(out int x, out int y)
     {
         x = X;

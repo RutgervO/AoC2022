@@ -28,18 +28,10 @@ public readonly struct Direction
         Y = 0;
         switch (name)
         {
-            case "N":
-                Y = -1;
-                break;
-            case "S":
-                Y = 1;
-                break;
-            case "W":
-                X = -1;
-                break;
-            case "E":
-                X = 1;
-                break;
+            case "N": case "U": Y = -1; break;
+            case "S": case "D": Y = 1; break;
+            case "W": case "L": X = -1; break;
+            case "E": case "R": X = 1; break;
             default:
                 throw new ArgumentException($"Unknown direction $name.", name);
         }
